@@ -6,7 +6,7 @@ import "net/http"
 func NewServer() *http.ServeMux {
 	server := http.NewServeMux()
 
-	server.HandleFunc("/", ImageHandler)
+	server.HandleFunc("/", Auth(ImageHandler))
 
 	return server
 }
