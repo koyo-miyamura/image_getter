@@ -12,3 +12,9 @@ And request
 ```bash
 curl -X POST -d 'url=https://...&key=hoge' http://localhost:12345/
 ```
+
+## Other
+You can change default port
+```bash
+go run main.go 8080
+```
