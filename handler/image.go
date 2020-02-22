@@ -8,23 +8,28 @@ import (
 	"github.com/koyo-miyamura/image_server/client"
 )
 
-// ImageHandler is XXX
+// ImageHandler はリクエストされたURL先から画像を読み込んでbase64エンコーディングして返します
+// URL先のコンテンツが画像でない場合はhttp.StatusBadRequestで返します
 func ImageHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-		w.WriteHeader(http.StatusBadRequest)
+		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
 	rawURL := r.FormValue("url")
 
-	client, err := client.NewClient(rawURL)
+	c, err := client.NewClient(rawURL)
 	if err != nil {
 		log.Println("error newClient", err.Error())
 	}
 
-	res, err := client.Do()
+	res, err := c.Do()
 	if err != nil {
 		log.Println(err)
-		w.WriteHeader(http.StatusNotAcceptable)
+		if err == client.ErrInvalidImage {
+			w.WriteHeader(http.StatusBadRequest)
+		} else {
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 

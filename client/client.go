@@ -16,9 +16,11 @@ import (
 	_ "image/png"
 )
 
-const (
-	// Timeout is XXX
+var (
+	// Timeout はリクエストのタイムアウト時間を表します
 	Timeout = 5 * time.Second
+	// ErrInvalidImage は読み込んだリソースが画像ではないことを表します
+	ErrInvalidImage = fmt.Errorf("error invalid image")
 )
 
 // Client is XXX
@@ -28,7 +30,7 @@ type Client struct {
 	client  *http.Client
 }
 
-// NewClient is XXX
+// NewClient は外部URLから画像を読み込むクライアントを返します
 func NewClient(urlStr string) (*Client, error) {
 	u, err := url.Parse(urlStr)
 	if err != nil {
@@ -46,7 +48,7 @@ func NewClient(urlStr string) (*Client, error) {
 	}, nil
 }
 
-// Do is XXX
+// Do はリクエストを実行します。読み込み先のリソースが画像でない場合 ErrInvalidImage を返します。
 func (c *Client) Do() ([]byte, error) {
 	req, err := http.NewRequest(http.MethodGet, c.URL.String(), nil)
 	if err != nil {
@@ -69,7 +71,7 @@ func (c *Client) Do() ([]byte, error) {
 	// 画像かどうか判定
 	_, _, err = image.Decode(b1)
 	if err != nil {
-		return []byte{}, err
+		return []byte{}, ErrInvalidImage
 	}
 
 	b, err := ioutil.ReadAll(b2)
