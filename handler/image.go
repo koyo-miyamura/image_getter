@@ -33,7 +33,7 @@ func ImageHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	e := base64.NewEncoder(base64.StdEncoding, w)
 	e.Write(res)
