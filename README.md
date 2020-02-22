@@ -1,5 +1,6 @@
 ## image_getter
-CORS避けるためにURLをPOSTのパラメータにして画像を取得してbase64エンコードして返すくん。
+URLをPOSTのパラメータとして画像を取得しbase64エンコードして返すくん。
+（CORS回避用）
 
 ## Usage
 Run server
