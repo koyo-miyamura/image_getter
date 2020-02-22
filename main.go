@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/koyo-miyamura/image_server/handler"
+	"github.com/koyo-miyamura/image_getter/handler"
 )
 
 const defaultPort = 12345

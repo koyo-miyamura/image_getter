@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/koyo-miyamura/image_server/client"
+	"github.com/koyo-miyamura/image_getter/client"
 )
 
 // ImageHandler はリクエストされたURL先から画像を読み込んでbase64エンコーディングして返します
