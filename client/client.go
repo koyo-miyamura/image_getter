@@ -18,7 +18,7 @@ import (
 
 var (
 	// Timeout はリクエストのタイムアウト時間を表します
-	Timeout = 5 * time.Second
+	Timeout = 30 * time.Second
 	// ErrInvalidImage は読み込んだリソースが画像ではないことを表します
 	ErrInvalidImage = fmt.Errorf("error invalid image")
 )
