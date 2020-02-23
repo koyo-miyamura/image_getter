@@ -1,7 +1,9 @@
 package handler
 
 import (
+	"bytes"
 	"encoding/base64"
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -35,9 +37,43 @@ func ImageHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	e := base64.NewEncoder(base64.StdEncoding, w)
-	e.Write(res)
-	e.Close()
+	if err = WriteJSON(w, &ImageResponse{
+		Base64: base64FromByte(res),
+	}); err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
 	return
+}
+
+// ImageResponse は ImageHandler のレスポンスを表します
+type ImageResponse struct {
+	Base64 string `json:"base64"`
+}
+
+// WriteJSON はレスポンスをJSON形式で書き込みます
+func WriteJSON(w http.ResponseWriter, res interface{}) error {
+	result, err := json.Marshal(res)
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(result)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func base64FromByte(b []byte) string {
+	var (
+		buf = &bytes.Buffer{}
+		e   = base64.NewEncoder(base64.StdEncoding, buf)
+	)
+	e.Write(b)
+	e.Close()
+
+	return buf.String()
 }
