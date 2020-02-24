@@ -27,15 +27,16 @@ func main() {
 
 func getPort() (int, error) {
 	var (
-		port = defaultPort
+		portStr = os.Getenv("PORT")
 	)
-	if len(os.Args) == 2 {
-		port, err := strconv.Atoi(os.Args[1])
-		if err != nil {
-			log.Println(err)
-			return 0, nil
-		}
-		return port, nil
+	if portStr == "" {
+		return defaultPort, nil
+	}
+
+	port, err := strconv.Atoi(portStr)
+	if err != nil {
+		log.Println(err)
+		return 0, nil
 	}
 	return port, nil
 }
